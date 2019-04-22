@@ -33,8 +33,7 @@ def calculate():
     pg = request.args.get('page')
     print ("Parametro: "+pg)
     offset = 10*(int(pg)-1)
-    # result_set = db.execute('select * from public."TB_TAG_RECEIVED" order by "DTH_INSERTION" desc LIMIT 10'+' OFFSET '+str(offset))
-    cur.execute('select * from TB_TAG_RECEIVED')
+    cur.execute('select * from TB_TAG_RECEIVED order by DTH_INSERTIO  desc LIMIT 10'+' OFFSET '+str(offset))
     result_set = cur.fetchall()
     tela = ""
     num_recs = 0
@@ -57,7 +56,7 @@ def calculate():
         numberOfPages = numberOfPages + 1
     if (numberOfPages == 0):
         numberOfPages = 1
-    start = pg*10
+
     for r in result_set:
         tela = tela + "<body><p>" + r[2] + "</p></body>"
         data = {}
@@ -79,7 +78,7 @@ def calculate():
         json_data = docs.append(json.dumps(data))
         num_recs = num_recs + 1
 
-    saida = '{"docs":[' + saida + '],"total":13,"limit":10,"page":'+str(tot)+',"pages":'+str(numberOfPages)+'}'
+    saida = '{"docs":[' + saida + '],"total":'+str(tot)+',"limit"=10,"page":'+pg+',"pages":'+str(numberOfPages)+'}'
 
     return saida
 
@@ -89,4 +88,4 @@ def calculate():
     #     return 'Unsupported operation'
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5001)
+    app.run()
